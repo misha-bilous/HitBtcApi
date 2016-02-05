@@ -22,6 +22,12 @@ namespace HitBtcApi
             Trading = new Trading(this);
         }
 
+        /// <summary>
+        /// Method that allow to execute a request to api
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="requireAuthentication"></param>
+        /// <returns></returns>
         public ApiResponse Execute(RestRequest request, bool requireAuthentication = true)
         {
             if (requireAuthentication && !IsAuthorized)
@@ -51,8 +57,16 @@ namespace HitBtcApi
 
         #region Authentication
 
+        /// <summary>
+        /// Flag shows that user is authorized
+        /// </summary>
         public bool IsAuthorized { get; set; }
 
+        /// <summary>
+        /// Method for authorization 
+        /// </summary>
+        /// <param name="apiKey">API key from the Settings page.</param>
+        /// <param name="secretKey">Secret key from the Settings page.</param>
         public void Authorize(string apiKey, string secretKey)
         {
             _apiKey = apiKey;

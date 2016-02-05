@@ -3,6 +3,9 @@ using RestSharp;
 
 namespace HitBtcApi.Categories
 {
+    /// <summary>
+    /// Payment RESTful API
+    /// </summary>
     public class Payment
     {
         HitBtcApi _api;
@@ -46,9 +49,9 @@ namespace HitBtcApi.Categories
         public TransactionList GetTransactions(int limit = 1000, string dir = "desc", int offset = 0)
         {
             var request = new RestRequest("/api/1/payment/transactions");
-            request.Parameters.Add(new Parameter() { Name = "limit", Value = limit, Type = ParameterType.GetOrPost });
-            request.Parameters.Add(new Parameter() { Name = "dir", Value = dir, Type = ParameterType.GetOrPost });
-            request.Parameters.Add(new Parameter() { Name = "offset", Value = offset, Type = ParameterType.GetOrPost });
+            request.Parameters.Add(new Parameter { Name = "limit", Value = limit, Type = ParameterType.GetOrPost });
+            request.Parameters.Add(new Parameter { Name = "dir", Value = dir, Type = ParameterType.GetOrPost });
+            request.Parameters.Add(new Parameter { Name = "offset", Value = offset, Type = ParameterType.GetOrPost });
             return _api.Execute(request);
         }
 
@@ -65,11 +68,11 @@ namespace HitBtcApi.Categories
         public Transaction GetPyout(decimal amount, string currency_code, string address, string extra_id)
         {
             var request = new RestRequest("/api/1/payment/transactions", Method.POST);
-            request.Parameters.Add(new Parameter() { Name = "amount", Value = amount, Type = ParameterType.GetOrPost });
-            request.Parameters.Add(new Parameter() { Name = "currency_code", Value = currency_code, Type = ParameterType.GetOrPost });
-            request.Parameters.Add(new Parameter() { Name = "address", Value = address, Type = ParameterType.GetOrPost });
+            request.Parameters.Add(new Parameter { Name = "amount", Value = amount, Type = ParameterType.GetOrPost });
+            request.Parameters.Add(new Parameter { Name = "currency_code", Value = currency_code, Type = ParameterType.GetOrPost });
+            request.Parameters.Add(new Parameter { Name = "address", Value = address, Type = ParameterType.GetOrPost });
             if (!string.IsNullOrEmpty(extra_id))
-                request.Parameters.Add(new Parameter() { Name = "extra_id", Value = extra_id, Type = ParameterType.GetOrPost });
+                request.Parameters.Add(new Parameter { Name = "extra_id", Value = extra_id, Type = ParameterType.GetOrPost });
 
             return _api.Execute(request);
         }
@@ -110,8 +113,8 @@ namespace HitBtcApi.Categories
         public Transaction TransferToTrading(decimal amount, string currency_code)
         {
             var request = new RestRequest("/api/1/payment/transfer_to_trading", Method.POST);
-            request.Parameters.Add(new Parameter() { Name = "amount", Value = amount, Type = ParameterType.GetOrPost });
-            request.Parameters.Add(new Parameter() { Name = "currency_code", Value = currency_code, Type = ParameterType.GetOrPost });
+            request.Parameters.Add(new Parameter { Name = "amount", Value = amount, Type = ParameterType.GetOrPost });
+            request.Parameters.Add(new Parameter { Name = "currency_code", Value = currency_code, Type = ParameterType.GetOrPost });
             return _api.Execute(request);
         }
 
@@ -125,8 +128,8 @@ namespace HitBtcApi.Categories
         public Transaction TransferToMain(decimal amount, string currency_code)
         {
             var request = new RestRequest("/api/1/payment/transfer_to_main", Method.POST);
-            request.Parameters.Add(new Parameter() { Name = "amount", Value = amount, Type = ParameterType.GetOrPost });
-            request.Parameters.Add(new Parameter() { Name = "currency_code", Value = currency_code, Type = ParameterType.GetOrPost });
+            request.Parameters.Add(new Parameter { Name = "amount", Value = amount, Type = ParameterType.GetOrPost });
+            request.Parameters.Add(new Parameter { Name = "currency_code", Value = currency_code, Type = ParameterType.GetOrPost });
             return _api.Execute(request);
         }
     }

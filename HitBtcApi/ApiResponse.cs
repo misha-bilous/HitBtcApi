@@ -4,6 +4,9 @@ using HitBtcApi.Model;
 
 namespace HitBtcApi
 {
+    /// <summary>
+    /// Converting JSON to Models 
+    /// </summary>
     public class ApiResponse
     {
         public string content { get; set; }
@@ -66,7 +69,6 @@ namespace HitBtcApi
         }
 
         #endregion
-
 
         #region Trading
 

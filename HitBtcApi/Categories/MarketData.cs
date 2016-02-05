@@ -4,6 +4,9 @@ using RestSharp;
 
 namespace HitBtcApi.Categories
 {
+    /// <summary>
+    /// Market data RESTful API
+    /// </summary>
     public class MarketData
     {
         private readonly HitBtcApi _api;
@@ -22,7 +25,6 @@ namespace HitBtcApi.Categories
         {
             return _api.Execute(new RestRequest("/api/1/public/time"), false);
         }
-
 
         /// <summary>
         /// Simbols returns the actual list of currency symbols traded on HitBTC exchange with their characteristics
@@ -59,7 +61,6 @@ namespace HitBtcApi.Categories
             return _api.Execute(new RestRequest("/api/1/public/ticker"), false);
         }
 
-
         /// <summary>
         /// returns a list of open orders for specified currency symbol: their prices and sizes.
         /// /api/1/public/:symbol/orderbook
@@ -73,7 +74,6 @@ namespace HitBtcApi.Categories
             return _api.Execute(request, false);
         }
 
-
         /// <summary>
         /// returns recent trades for the specified currency symbol.
         /// /api/1/public/:symbol/trades/recent
@@ -84,19 +84,12 @@ namespace HitBtcApi.Categories
         public SpecifiedTrades GetRecentTrades(Symbol symbol, int max_results = 1000)
         {
             var request = new RestRequest("/api/1/public/{symbol}/trades/recent");
-            request.Parameters.Add(new Parameter() { Name = "symbol", Value = symbol.symbol, Type = ParameterType.UrlSegment });
-            request.Parameters.Add(new Parameter() { Name = "max_results", Value = max_results, Type = ParameterType.GetOrPost });
-            request.Parameters.Add(new Parameter() { Name = "format_item", Value = "object", Type = ParameterType.GetOrPost });
-            request.Parameters.Add(new Parameter() { Name = "side", Value = "true", Type = ParameterType.GetOrPost });
+            request.Parameters.Add(new Parameter { Name = "symbol", Value = symbol.symbol, Type = ParameterType.UrlSegment });
+            request.Parameters.Add(new Parameter { Name = "max_results", Value = max_results, Type = ParameterType.GetOrPost });
+            request.Parameters.Add(new Parameter { Name = "format_item", Value = "object", Type = ParameterType.GetOrPost });
+            request.Parameters.Add(new Parameter { Name = "side", Value = "true", Type = ParameterType.GetOrPost });
 
             return _api.Execute(request);
         }
-
-
-        ///api/1/public/:symbol/trades/recent
-        //public SpecifiedTrade GetSpecifiedTrades()
-        //{
-
-        //}
     }
 }

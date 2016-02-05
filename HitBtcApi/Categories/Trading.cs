@@ -5,6 +5,9 @@ using RestSharp;
 
 namespace HitBtcApi.Categories
 {
+    /// <summary>
+    /// Trading RESTful API
+    /// </summary>
     public class Trading
     {
         private HitBtcApi _api;
@@ -36,13 +39,12 @@ namespace HitBtcApi.Categories
             var request = new RestRequest("/api/1/trading/orders/active");
 
             if (!string.IsNullOrEmpty(symbols))
-                request.Parameters.Add(new Parameter() { Value = symbols, Name = "symbols", Type = ParameterType.GetOrPost });
+                request.Parameters.Add(new Parameter { Value = symbols, Name = "symbols", Type = ParameterType.GetOrPost });
             if (!string.IsNullOrEmpty(clientOrderId))
-                request.Parameters.Add(new Parameter() { Value = clientOrderId, Name = "clientOrderId", Type = ParameterType.GetOrPost });
+                request.Parameters.Add(new Parameter { Value = clientOrderId, Name = "clientOrderId", Type = ParameterType.GetOrPost });
 
             return _api.Execute(request);
         }
-
 
         /// <summary>
         /// returns an array of user’s recent orders (order objects) for last 24 hours, sorted by order update time.
@@ -59,18 +61,17 @@ namespace HitBtcApi.Categories
         {
             var request = new RestRequest("/api/1/trading/orders/recent");
 
-            request.Parameters.Add(new Parameter() { Value = start_index, Name = "start_index", Type = ParameterType.GetOrPost });
-            request.Parameters.Add(new Parameter() { Value = max_results, Name = "max_results", ContentType = "integer", Type = ParameterType.GetOrPost });
+            request.Parameters.Add(new Parameter { Value = start_index, Name = "start_index", Type = ParameterType.GetOrPost });
+            request.Parameters.Add(new Parameter { Value = max_results, Name = "max_results", ContentType = "integer", Type = ParameterType.GetOrPost });
             if (!string.IsNullOrEmpty(sort))
-                request.Parameters.Add(new Parameter() { Value = sort, Name = "sort", Type = ParameterType.GetOrPost });
+                request.Parameters.Add(new Parameter { Value = sort, Name = "sort", Type = ParameterType.GetOrPost });
             if (!string.IsNullOrEmpty(symbols))
-                request.Parameters.Add(new Parameter() { Value = symbols, Name = "symbols", Type = ParameterType.GetOrPost });
+                request.Parameters.Add(new Parameter { Value = symbols, Name = "symbols", Type = ParameterType.GetOrPost });
             if (!string.IsNullOrEmpty(statuses))
-                request.Parameters.Add(new Parameter() { Value = statuses, Name = "statuses", Type = ParameterType.GetOrPost });
+                request.Parameters.Add(new Parameter { Value = statuses, Name = "statuses", Type = ParameterType.GetOrPost });
 
             return _api.Execute(request);
         }
-
 
         /// <summary>
         /// returns the trading history - an array of user’s trades(trade objects).
@@ -90,17 +91,17 @@ namespace HitBtcApi.Categories
         {
             var request = new RestRequest("/api/1/trading/trades");
 
-            request.Parameters.Add(new Parameter() { Value = by, Name = "by", Type = ParameterType.GetOrPost });
-            request.Parameters.Add(new Parameter() { Value = start_index, Name = "start_index", Type = ParameterType.GetOrPost });
-            request.Parameters.Add(new Parameter() { Value = max_results, Name = "max_results", Type = ParameterType.GetOrPost });
+            request.Parameters.Add(new Parameter { Value = by, Name = "by", Type = ParameterType.GetOrPost });
+            request.Parameters.Add(new Parameter { Value = start_index, Name = "start_index", Type = ParameterType.GetOrPost });
+            request.Parameters.Add(new Parameter { Value = max_results, Name = "max_results", Type = ParameterType.GetOrPost });
             if (!string.IsNullOrEmpty(symbols))
-                request.Parameters.Add(new Parameter() { Value = symbols, Name = "symbols", Type = ParameterType.GetOrPost });
+                request.Parameters.Add(new Parameter { Value = symbols, Name = "symbols", Type = ParameterType.GetOrPost });
             if (!string.IsNullOrEmpty(sort))
-                request.Parameters.Add(new Parameter() { Value = sort, Name = "sort", Type = ParameterType.GetOrPost });
+                request.Parameters.Add(new Parameter { Value = sort, Name = "sort", Type = ParameterType.GetOrPost });
             if (!string.IsNullOrEmpty(from))
-                request.Parameters.Add(new Parameter() { Value = from, Name = "from", Type = ParameterType.GetOrPost });
+                request.Parameters.Add(new Parameter { Value = from, Name = "from", Type = ParameterType.GetOrPost });
             if (!string.IsNullOrEmpty(till))
-                request.Parameters.Add(new Parameter() { Value = till, Name = "till", Type = ParameterType.GetOrPost });
+                request.Parameters.Add(new Parameter { Value = till, Name = "till", Type = ParameterType.GetOrPost });
 
             var str = request.ToString();
             return _api.Execute(request);
