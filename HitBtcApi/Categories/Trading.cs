@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
+using System.Threading.Tasks;
 using HitBtcApi.Model;
 using RestSharp;
 
@@ -22,9 +23,9 @@ namespace HitBtcApi.Categories
         /// /api/1/trading/balance
         /// </summary>
         /// <returns></returns>
-        public TradingBalanceList GeTradingBalance()
+        public async Task<TradingBalanceList> GeTradingBalance()
         {
-            return _api.Execute(new RestRequest("/api/1/trading/balance"));
+            return await _api.Execute(new RestRequest("/api/1/trading/balance"));
         }
 
         /// <summary>
@@ -34,7 +35,7 @@ namespace HitBtcApi.Categories
         /// <param name="symbols">Comma-separated list of symbols. Default - all symbols</param>
         /// <param name="clientOrderId">Unique order ID</param>
         /// <returns></returns>
-        public Orders GetActiveOrders(string symbols = null, string clientOrderId = null)
+        public async Task<Orders> GetActiveOrders(string symbols = null, string clientOrderId = null)
         {
             var request = new RestRequest("/api/1/trading/orders/active");
 
@@ -43,7 +44,7 @@ namespace HitBtcApi.Categories
             if (!string.IsNullOrEmpty(clientOrderId))
                 request.Parameters.Add(new Parameter { Value = clientOrderId, Name = "clientOrderId", Type = ParameterType.GetOrPost });
 
-            return _api.Execute(request);
+            return await _api.Execute(request);
         }
 
         /// <summary>
@@ -57,7 +58,7 @@ namespace HitBtcApi.Categories
         /// <param name="statuses">Comma-separated list of order statuses: 
         /// new, partiallyFilled, filled, canceled, expired,rejected</param>
         /// <returns></returns>
-        public Orders GetRecentOrders(int start_index = 0, int max_results = 1000, string sort = "asc", string symbols = null, string statuses = null)
+        public async Task<Orders> GetRecentOrders(int start_index = 0, int max_results = 1000, string sort = "asc", string symbols = null, string statuses = null)
         {
             var request = new RestRequest("/api/1/trading/orders/recent");
 
@@ -70,7 +71,7 @@ namespace HitBtcApi.Categories
             if (!string.IsNullOrEmpty(statuses))
                 request.Parameters.Add(new Parameter { Value = statuses, Name = "statuses", Type = ParameterType.GetOrPost });
 
-            return _api.Execute(request);
+            return await _api.Execute(request);
         }
 
         /// <summary>
@@ -86,7 +87,7 @@ namespace HitBtcApi.Categories
         /// <param name="from">Returns trades with trade_id > specified trade_id (if by=trade_id) or returns trades with timestamp >= specified timestamp(ifby=ts`)</param>
         /// <param name="till">Returns trades with trade_id < specified trade_id (if by=trade_id) or returns trades with timestamp < specified timestamp (if by=ts)</param>
         /// <returns></returns>
-        public Trades GetTrades(string by = "trade_id", int start_index = 0, int max_results = 1000, string symbols = null, string sort = "asc",
+        public async Task<Trades> GetTrades(string by = "trade_id", int start_index = 0, int max_results = 1000, string symbols = null, string sort = "asc",
             string from = null, string till = null)
         {
             var request = new RestRequest("/api/1/trading/trades");
@@ -104,7 +105,7 @@ namespace HitBtcApi.Categories
                 request.Parameters.Add(new Parameter { Value = till, Name = "till", Type = ParameterType.GetOrPost });
 
             var str = request.ToString();
-            return _api.Execute(request);
+            return await _api.Execute(request);
         }
     }
 }

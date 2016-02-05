@@ -1,4 +1,5 @@
-﻿using HitBtcApi.Model;
+﻿using System.Threading.Tasks;
+using HitBtcApi.Model;
 using RestSharp;
 
 namespace HitBtcApi.Categories
@@ -20,9 +21,9 @@ namespace HitBtcApi.Categories
         /// /api/1/payment/balance
         /// </summary>
         /// <returns></returns>
-        public MultiCurrencyBalance GetMultiCurrencyBalance()
+        public async Task<MultiCurrencyBalance> GetMultiCurrencyBalance()
         {
-            return _api.Execute(new RestRequest("/api/1/payment/balance"));
+            return await _api.Execute(new RestRequest("/api/1/payment/balance"));
         }
 
         /// <summary>
@@ -31,11 +32,11 @@ namespace HitBtcApi.Categories
         /// </summary>
         /// <param name="id">Transaction Id, Required</param>
         /// <returns></returns>
-        public Transaction GetTransactions(string id)
+        public async Task<Transaction> GetTransactions(string id)
         {
             var request = new RestRequest("/api/1/payment/transactions/{id}");
             request.AddParameter("id", id, ParameterType.UrlSegment);
-            return _api.Execute(request);
+            return await _api.Execute(request);
         }
 
         /// <summary>
@@ -46,13 +47,13 @@ namespace HitBtcApi.Categories
         /// <param name="limit">Maximum results for the query, Required</param>
         /// <param name="dir">Transactions are sorted ascending (ask) or descending (desc) (default)</param>
         /// <returns></returns>
-        public TransactionList GetTransactions(int limit = 1000, string dir = "desc", int offset = 0)
+        public async Task<TransactionList> GetTransactions(int limit = 1000, string dir = "desc", int offset = 0)
         {
             var request = new RestRequest("/api/1/payment/transactions");
             request.Parameters.Add(new Parameter { Name = "limit", Value = limit, Type = ParameterType.GetOrPost });
             request.Parameters.Add(new Parameter { Name = "dir", Value = dir, Type = ParameterType.GetOrPost });
             request.Parameters.Add(new Parameter { Name = "offset", Value = offset, Type = ParameterType.GetOrPost });
-            return _api.Execute(request);
+            return await _api.Execute(request);
         }
 
         /// <summary>
@@ -65,7 +66,7 @@ namespace HitBtcApi.Categories
         /// <param name="address">BTC/LTC address to withdraw to, Required</param>
         /// <param name="id">payment id for cryptonote</param>
         /// <returns></returns>
-        public Transaction GetPyout(decimal amount, string currency_code, string address, string extra_id)
+        public async Task<Transaction> GetPyout(decimal amount, string currency_code, string address, string extra_id)
         {
             var request = new RestRequest("/api/1/payment/transactions", Method.POST);
             request.Parameters.Add(new Parameter { Name = "amount", Value = amount, Type = ParameterType.GetOrPost });
@@ -74,7 +75,7 @@ namespace HitBtcApi.Categories
             if (!string.IsNullOrEmpty(extra_id))
                 request.Parameters.Add(new Parameter { Name = "extra_id", Value = extra_id, Type = ParameterType.GetOrPost });
 
-            return _api.Execute(request);
+            return await _api.Execute(request);
         }
 
         /// <summary>
@@ -83,11 +84,11 @@ namespace HitBtcApi.Categories
         /// </summary>
         /// <param name="currency"></param>
         /// <returns></returns>
-        public Address GetAddress(string currency)
+        public async Task<Address> GetAddress(string currency)
         {
             var request = new RestRequest("/api/1/payment/address/{currency}");
             request.AddParameter("currency", currency, ParameterType.UrlSegment);
-            return _api.Execute(request);
+            return await _api.Execute(request);
         }
 
         /// <summary>
@@ -96,11 +97,11 @@ namespace HitBtcApi.Categories
         /// </summary>
         /// <param name="currency"></param>
         /// <returns></returns>
-        public Address CreateAddress(string currency)
+        public async Task<Address> CreateAddress(string currency)
         {
             var request = new RestRequest("/api/1/payment/address/{currency}", Method.POST);
             request.AddParameter("currency", currency, ParameterType.UrlSegment);
-            return _api.Execute(request);
+            return await _api.Execute(request);
         }
 
         /// <summary>
@@ -110,12 +111,12 @@ namespace HitBtcApi.Categories
         /// <param name="amount">Funds amount to transfer, Required</param>
         /// <param name="currency_code">Currency symbol, e.g. BTC, Required</param>
         /// <returns></returns>
-        public Transaction TransferToTrading(decimal amount, string currency_code)
+        public async Task<Transaction> TransferToTrading(decimal amount, string currency_code)
         {
             var request = new RestRequest("/api/1/payment/transfer_to_trading", Method.POST);
             request.Parameters.Add(new Parameter { Name = "amount", Value = amount, Type = ParameterType.GetOrPost });
             request.Parameters.Add(new Parameter { Name = "currency_code", Value = currency_code, Type = ParameterType.GetOrPost });
-            return _api.Execute(request);
+            return await _api.Execute(request);
         }
 
         /// <summary>
@@ -125,12 +126,12 @@ namespace HitBtcApi.Categories
         /// <param name="amount">Funds amount to transfer, Required</param>
         /// <param name="currency_code">Currency symbol, e.g. BTC, Required</param>
         /// <returns></returns>
-        public Transaction TransferToMain(decimal amount, string currency_code)
+        public async Task<Transaction> TransferToMain(decimal amount, string currency_code)
         {
             var request = new RestRequest("/api/1/payment/transfer_to_main", Method.POST);
             request.Parameters.Add(new Parameter { Name = "amount", Value = amount, Type = ParameterType.GetOrPost });
             request.Parameters.Add(new Parameter { Name = "currency_code", Value = currency_code, Type = ParameterType.GetOrPost });
-            return _api.Execute(request);
+            return await _api.Execute(request);
         }
     }
 }

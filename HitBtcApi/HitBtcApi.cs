@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using HitBtcApi.Categories;
 using RestSharp;
 
@@ -28,7 +30,34 @@ namespace HitBtcApi
         /// <param name="request"></param>
         /// <param name="requireAuthentication"></param>
         /// <returns></returns>
-        public ApiResponse Execute(RestRequest request, bool requireAuthentication = true)
+        //public ApiResponse Execute(RestRequest request, bool requireAuthentication = true)
+        //{
+        //    if (requireAuthentication && !IsAuthorized)
+        //        throw new Exception("AccessTokenInvalid");
+
+        //    var client = new RestClient(url);
+
+        //    if (requireAuthentication)
+        //    {
+        //        request.AddParameter("nonce", GetNonce());
+        //        request.AddParameter("apikey", _apiKey);
+        //        string sign = CalculateSignature(client.BuildUri(request).PathAndQuery, _secretKey);
+        //        request.AddHeader("X-Signature", sign);
+        //    }
+
+        //    var response = client.Execute(request);
+
+        //    if (response.ErrorException != null)
+        //    {
+        //        const string message = "Error retrieving response.  Check inner details for more info.";
+        //        var exception = new ApplicationException(message, response.ErrorException);
+        //        throw exception;
+        //    }
+
+        //    return new ApiResponse { content = response.Content };
+        //}
+
+        public async Task<ApiResponse> Execute(RestRequest request, bool requireAuthentication = true)
         {
             if (requireAuthentication && !IsAuthorized)
                 throw new Exception("AccessTokenInvalid");
@@ -43,7 +72,7 @@ namespace HitBtcApi
                 request.AddHeader("X-Signature", sign);
             }
 
-            var response = client.Execute(request);
+            var response = await client.GetResponseAsync(request);
 
             if (response.ErrorException != null)
             {
@@ -95,5 +124,36 @@ namespace HitBtcApi
         }
 
         #endregion
+    }
+
+    public static class RestClientExtensions
+    {
+        private static Task<T> SelectAsync<T>(this RestClient client, IRestRequest request,
+            Func<IRestResponse, T> selector)
+        {
+            var tcs = new TaskCompletionSource<T>();
+            var loginResponse = client.ExecuteAsync(request, r =>
+            {
+                if (r.ErrorException == null)
+                {
+                    tcs.SetResult(selector(r));
+                }
+                else
+                {
+                    tcs.SetException(r.ErrorException);
+                }
+            });
+            return tcs.Task;
+        }
+
+        public static Task<string> GetContentAsync(this RestClient client, IRestRequest request)
+        {
+            return client.SelectAsync(request, r => r.Content);
+        }
+
+        public static Task<IRestResponse> GetResponseAsync(this RestClient client, IRestRequest request)
+        {
+            return client.SelectAsync(request, r => r);
+        }
     }
 }
