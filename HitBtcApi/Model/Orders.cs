@@ -11,7 +11,7 @@ namespace HitBtcApi.Model
         /// <summary>
         /// Order ID on the exchange
         /// </summary>
-        public int orderId { get; set; }
+        public string orderId { get; set; }
 
         /// <summary>
         /// Order status
